@@ -8,6 +8,11 @@ variable "uami_client_id" {
   description = "VM에 부착된 관리 ID(UAMI)의 Client ID"
 }
 
+variable "acr_server" {
+  type        = string
+  description = "ACR 서버 주소 (예: myacr.azurecr.io)"
+}
+
 variable "subscription_id" {
   type        = string
   description = "배포 대상 구독 ID"
