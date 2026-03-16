@@ -2,27 +2,6 @@ name: "Deploy ACA to Dev"
 
 on:
   workflow_dispatch:
-    inputs:
-      app_name:
-        description: '배포할 Container App 이름 (State 파일 이름으로도 사용됨)'
-        required: true
-        type: string
-        # default 없음: 사용자가 무조건 입력해야 함
-      create_environment:
-        description: '새로운 ACA 환경을 생성할까요? (기존 환경 사용 시 false)'
-        required: true
-        type: boolean
-        default: false
-      cae_name:
-        description: '대상 Container App Environment 이름'
-        required: true
-        type: string
-        # default 없음: 사용자가 무조건 입력해야 함
-      cae_rg_name:
-        description: '해당 환경이 있는 리소스 그룹'
-        required: true
-        type: string
-        default: 'rg-krc-dev-stl'
 
 jobs:
   deploy-dev:
@@ -45,16 +24,12 @@ jobs:
             -backend-config="resource_group_name=rg-krc-dev-common" \
             -backend-config="storage_account_name=sakrcdevktcloudshell" \
             -backend-config="container_name=terraform-state" \
-            -backend-config="key=dev/${{ github.event.inputs.app_name }}.tfstate" \
+            -backend-config="key=dev/terraform.tfstate" \
             -backend-config="subscription_id=${{ secrets.SUB_ID_DEV }}"
 
       - name: Terraform Apply
         run: |
           terraform apply -auto-approve \
-            -var="env=dev" \
+            -var-file="dev.tfvars" \
             -var="uami_client_id=${{ secrets.UAMI_CLIENT_ID }}" \
-            -var="subscription_id=${{ secrets.SUB_ID_DEV }}" \
-            -var="create_environment=${{ inputs.create_environment }}" \
-            -var="cae_name=${{ inputs.cae_name }}" \
-            -var="cae_rg_name=${{ inputs.cae_rg_name }}" \
-            -var="app_name=${{ inputs.app_name }}"
+            -var="subscription_id=${{ secrets.SUB_ID_DEV }}"

@@ -34,3 +34,31 @@ variable "app_name" {
   type        = string
   description = "배포할 Container App의 정확한 이름"
 }
+
+variable "uami_resource_id" {
+  type        = string
+  description = "ACR에 접근하기 위한 UAMI(사용자 할당 관리 ID)의 Resource ID"
+}
+
+variable "image" {
+  type        = string
+  description = "배포할 컨테이너 이미지 (예: acrstorelinktestaca.azurecr.io/myapp:latest)"
+}
+
+variable "cpu" {
+  type        = number
+  description = "Container App에 할당할 CPU 코어 수 (예: 0.25, 0.5, 1.0 등)"
+  default     = 0.25
+}
+
+variable "memory" {
+  type        = string
+  description = "Container App에 할당할 메모리 크기 (예: 0.5Gi, 1.0Gi, 2.0Gi 등)"
+  default     = "0.5Gi"
+}
+
+variable "target_port" {
+  type        = number
+  description = "컨테이너 내 애플리케이션이 수신 대기하는 포트 번호"
+  default     = 8080
+}

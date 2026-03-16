@@ -14,11 +14,10 @@ data "azurerm_container_app_environment" "existing_cae" {
 # ------------------------------------------------------------------
 # [분기 B] 새로운 환경 생성 (create_environment == true)
 # ------------------------------------------------------------------
-# [수정됨] 기존에 만들어진 LAW 이름 규칙 적용 (law-krc-dev-common)
 data "azurerm_log_analytics_workspace" "law" {
   count               = var.create_environment ? 1 : 0
   name                = "law-krc-${var.env}-common" 
-  resource_group_name = "rg-krc-${var.env}-common" # LAW가 위치한 공통 리소스 그룹 지정
+  resource_group_name = "rg-krc-${var.env}-common"
 }
 
 resource "azurerm_container_app_environment" "new_cae" {
@@ -42,18 +41,30 @@ resource "azurerm_container_app" "app" {
   resource_group_name          = data.azurerm_resource_group.app_rg.name
   revision_mode                = "Single"
 
+  # [수정 1] 관리 ID 부여: 앱이 ACR에 접근할 수 있도록 신분증(UAMI)을 달아줍니다.
+  identity {
+    type         = "UserAssigned"
+    identity_ids = "/subscriptions/a98144a1-06aa-4136-9f70-d68d15be60f3/resourcegroups/rg-krc-dev-common/providers/microsoft.managedidentity/userassignedidentities/uami-krc-dev-github-runner"
+  }
+
+  # [수정 2] ACR 레지스트리 설정: 어떤 ID로 ACR에 로그인할지 명시합니다.
+  registry {
+    server   = "acrstorelinktestaca.azurecr.io"
+    identity = var.uami_resource_id
+  }
+
   template {
     container {
-      name   = var.app_name   # 컨테이너 내부 이름도 앱 이름과 동일하게 맞춤
-      image  = var.image      # [수정됨] 주입받은 이미지 사용
-      cpu    = var.cpu        # [수정됨] 주입받은 CPU 사용
-      memory = var.memory     # [수정됨] 주입받은 메모리 사용
+      name   = var.app_name
+      image  = var.image   
+      cpu    = var.cpu     
+      memory = var.memory  
     }
   }
 
   ingress {
     external_enabled = true
-    target_port      = var.target_port # [수정됨] 주입받은 포트 사용
+    target_port      = var.target_port
     traffic_weight {
       percentage      = 100
       latest_revision = true
