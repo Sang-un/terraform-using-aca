@@ -42,6 +42,5 @@ jobs:
         working-directory: ${{ inputs.app_dir }}
         run: |
           terraform apply -auto-approve \
-            -var-file="dev.tfvars" \
             -var="uami_client_id=${{ secrets.UAMI_CLIENT_ID }}" \
             -var="subscription_id=${{ secrets.SUB_ID_DEV }}"
