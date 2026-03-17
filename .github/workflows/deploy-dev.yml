@@ -2,6 +2,11 @@ name: "Deploy ACA to Dev"
 
 on:
   workflow_dispatch:
+    inputs:
+      app_dir:
+        description: '배포할 애플리케이션 디렉토리 이름 (예: test-app, app-b)'
+        required: true
+        type: string
 
 permissions:
   id-token: write # Azure 로그인을 위한 OIDC 토큰 발급 권한
@@ -24,15 +29,17 @@ jobs:
           allow-no-subscriptions: true
 
       - name: Terraform Init
+        working-directory: ${{ inputs.app_dir }}
         run: |
           terraform init \
             -backend-config="resource_group_name=rg-krc-dev-common" \
             -backend-config="storage_account_name=sakrcdevktcloudshell" \
             -backend-config="container_name=terraform-state" \
-            -backend-config="key=dev/terraform.tfstate" \
+            -backend-config="key=dev/${{ inputs.app_dir }}/terraform.tfstate" \
             -backend-config="subscription_id=${{ secrets.SUB_ID_DEV }}"
 
       - name: Terraform Apply
+        working-directory: ${{ inputs.app_dir }}
         run: |
           terraform apply -auto-approve \
             -var-file="dev.tfvars" \
