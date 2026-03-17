@@ -1,5 +1,5 @@
 data "azurerm_resource_group" "app_rg" {
-  name = "rg-aca-${var.env}"
+  name = "rg-${var.env}-stl"
 }
 
 # ------------------------------------------------------------------
