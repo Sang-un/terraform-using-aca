@@ -12,4 +12,3 @@ cpu                = 0.25
 memory             = "0.5Gi"
 target_port        = 80
 uami_resource_id   = "/subscriptions/a98144a1-06aa-4136-9f70-d68d15be60f3/resourceGroups/rg-krc-dev-common/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami-krc-dev-github-runner"
-uami_env_id        = "33d5857b-4225-408a-bf8d-bc64373392b0"
