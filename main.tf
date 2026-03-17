@@ -50,7 +50,7 @@ resource "azurerm_container_app" "app" {
   # [수정 2] ACR 레지스트리 설정: 어떤 ID로 ACR에 로그인할지 명시합니다.
   registry {
     server   = var.acr_server
-    identity = var.uami_env_id
+    identity = "System"
   }
 
   template {
