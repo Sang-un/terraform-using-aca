@@ -42,15 +42,15 @@ resource "azurerm_container_app" "app" {
   revision_mode                = "Single"
 
   # [수정 1] 관리 ID 부여: 앱이 ACR에 접근할 수 있도록 신분증(UAMI)을 달아줍니다.
-  identity {
-    type         = "UserAssigned"
-    identity_ids = [var.uami_resource_id]
-  }
+#  identity {
+#    type         = "UserAssigned"
+#    identity_ids = [var.uami_resource_id]
+#  }
 
   # [수정 2] ACR 레지스트리 설정: 어떤 ID로 ACR에 로그인할지 명시합니다.
   registry {
     server   = var.acr_server
-    identity = var.uami_resource_id
+    identity = var.uami_env_id
   }
 
   template {
