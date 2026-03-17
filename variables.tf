@@ -45,6 +45,11 @@ variable "uami_resource_id" {
   description = "ACR에 접근하기 위한 UAMI(사용자 할당 관리 ID)의 Resource ID"
 }
 
+variable "uami_env_id" {
+  type        = string
+  description = "ACR에 접근하기 위한 SAMI(환경 시스템 할당 관리 ID)의 ID"
+}
+
 variable "image" {
   type        = string
   description = "배포할 컨테이너 이미지 (예: acrstorelinktestaca.azurecr.io/myapp:latest)"
