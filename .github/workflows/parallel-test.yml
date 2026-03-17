@@ -1,0 +1,25 @@
+name: "Parallel Runner Test"
+
+on:
+  workflow_dispatch: # 수동 실행 버튼 활성화
+
+jobs:
+  parallel-jobs:
+    runs-on: self-hosted # 우리가 만든 두 대의 VM 러너를 바라봅니다.
+    strategy:
+      matrix:
+        target: [vm-krc-dev-github-runner01, vm-krc-dev-github-runner02] # 두 개의 병렬 작업을 동시에 생성하라는 지시어입니다.
+      
+    steps:
+      - name: 🏃‍♂️ 러너 호스트 확인
+        run: |
+          echo "현재 할당된 타겟: ${{ matrix.target }}"
+          echo "실제 작업을 수행 중인 컴퓨터(VM) 이름: $(hostname)"
+          
+      - name: 👀 관전 타임 (30초 대기)
+        run: |
+          echo "지금 바로 GitHub Actions 화면으로 가서 두 개의 Job이 동시에 도는 걸 확인하세요!"
+          sleep 30 
+          
+      - name: ✅ 작업 완료
+        run: echo "병렬 테스트 성공!"
