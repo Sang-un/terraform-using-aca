@@ -11,4 +11,4 @@ image              = "acrstorelinktestaca.azurecr.io/web-info:v1" # 실제 이�
 cpu                = 0.25
 memory             = "0.5Gi"
 target_port        = 80
-uami_resource_id   = "/subscriptions/a98144a1-06aa-4136-9f70-d68d15be60f3/resourcegroups/rg-krc-dev-common/providers/microsoft.managedidentity/userassignedidentities/uami-krc-dev-github-runner"
+uami_resource_id   = "/subscriptions/a98144a1-06aa-4136-9f70-d68d15be60f3/resourceGroups/rg-krc-dev-common/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami-krc-dev-github-runner"
