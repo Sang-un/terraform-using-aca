@@ -3,6 +3,10 @@ name: "Deploy ACA to Dev"
 on:
   workflow_dispatch:
 
+permissions:
+  id-token: write # Azure 로그인을 위한 OIDC 토큰 발급 권한
+  contents: read  # 저장소 코드를 읽기 위한 권한
+
 jobs:
   deploy-dev:
     runs-on: self-hosted 
