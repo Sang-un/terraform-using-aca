@@ -1,4 +1,4 @@
-name: "Deploy ACA to Dev"
+name: "Deploy ACA to Prd"
 
 on:
   workflow_dispatch:
@@ -23,24 +23,24 @@ jobs:
         uses: azure/login@v2
         with:
           auth-type: identity
-          client-id: ${{ secrets.UAMI_CLIENT_ID_DEV }}
+          client-id: ${{ secrets.UAMI_CLIENT_ID_PRD }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-          subscription-id: ${{ secrets.SUB_ID_DEV }}
+          subscription-id: ${{ secrets.SUB_ID_PRD }}
           allow-no-subscriptions: true
 
       - name: Terraform Init
         working-directory: ${{ inputs.app_dir }}
         run: |
           terraform init \
-            -backend-config="resource_group_name=rg-krc-dev-common" \
+            -backend-config="resource_group_name=rg-krc-prd-common" \
             -backend-config="storage_account_name=sakrcdevktcloudshell" \
             -backend-config="container_name=terraform-state" \
-            -backend-config="key=dev/${{ inputs.app_dir }}/terraform.tfstate" \
-            -backend-config="subscription_id=${{ secrets.SUB_ID_DEV }}"
+            -backend-config="key=prd/${{ inputs.app_dir }}/terraform.tfstate" \
+            -backend-config="subscription_id=${{ secrets.SUB_ID_PRD }}"
 
       - name: Terraform Apply
         working-directory: ${{ inputs.app_dir }}
         run: |
           terraform apply -auto-approve \
-            -var="uami_client_id=${{ secrets.UAMI_CLIENT_ID_DEV }}" \
-            -var="subscription_id=${{ secrets.SUB_ID_DEV }}"
+            -var="uami_client_id=${{ secrets.UAMI_CLIENT_ID_PRD }}" \
+            -var="subscription_id=${{ secrets.SUB_ID_PRD }}"
