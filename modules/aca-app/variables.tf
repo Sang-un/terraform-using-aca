@@ -85,3 +85,9 @@ variable "zone_redundancy_enabled" {
   description = "ACA Environment의 가용성 영역 이중화 활성화 여부"
   default     = false
 }
+
+variable "allow_insecure_connections" {
+  type        = bool
+  description = "true면 HTTP(80) 트래픽 허용, false면 HTTPS(443)로만 트래픽 허용"
+  default     = true
+}

@@ -76,8 +76,9 @@ resource "azurerm_container_app" "app" {
   }
 
   ingress {
-    external_enabled = true
-    target_port      = var.target_port
+    external_enabled           = true
+    allow_insecure_connections = var.allow_insecure_connections
+    target_port                = var.target_port
     traffic_weight {
       percentage      = 100
       latest_revision = true
