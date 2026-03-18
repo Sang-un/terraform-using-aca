@@ -79,3 +79,9 @@ variable "internal_load_balancer_enabled" {
   description = "true면 외부 인터넷 접근 차단 (프라이빗 환경), false면 외부 노출"
   default     = false
 }
+
+variable "zone_redundancy_enabled" {
+  type        = bool
+  description = "ACA Environment의 가용성 영역 이중화 활성화 여부"
+  default     = false
+}

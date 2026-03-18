@@ -32,6 +32,9 @@ resource "azurerm_container_app_environment" "new_cae" {
 
   # (선택) 커스텀 서브넷을 쓸 때, 내부 통신만 허용할지 외부 인터넷도 허용할지 결정
   internal_load_balancer_enabled = var.internal_load_balancer_enabled
+
+  # 가용성 영역 중복(Zone Redundancy) 활성화 설정
+  zone_redundancy_enabled        = var.zone_redundancy_enabled
 }
 
 locals {
@@ -54,9 +57,13 @@ resource "azurerm_container_app" "app" {
   }
 
   # [수정 2] ACR 레지스트리 설정: 어떤 ID로 ACR에 로그인할지 명시합니다.
-  registry {
-    server   = var.acr_server
-    identity = var.uami_resource_id
+  # acr_server 변수가 입력되었을 때만 registry 설정을 추가합니다. (MCR 기본 이미지 등 퍼블릭 이미지 사용 지원)
+  dynamic "registry" {
+    for_each = var.acr_server != "" ? [1] : []
+    content {
+      server   = var.acr_server
+      identity = var.uami_resource_id
+    }
   }
 
   template {
