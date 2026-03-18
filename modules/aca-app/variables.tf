@@ -3,6 +3,16 @@ variable "env" {
   description = "배포 환경 (예: dev, stg, prd)"
 }
 
+variable "region" {
+  type        = string
+  description = "배포 지역 (예: krc, jpe 등)"
+}
+
+variable "project" {
+  type        = string
+  description = "프로젝트/도메인 이름 (예: stl, pug, data 등)"
+}
+
 variable "uami_client_id" {
   type        = string
   description = "VM에 부착된 관리 ID(UAMI)의 Client ID"
@@ -26,12 +36,14 @@ variable "create_environment" {
 
 variable "cae_name" {
   type        = string
-  description = "사용하거나 새로 생성할 Container App Environment의 정확한 이름"
+  description = "명시적으로 지정할 Container App Environment 이름 (비워두면 자동 생성 규칙 적용)"
+  default     = ""
 }
 
 variable "cae_rg_name" {
   type        = string
-  description = "Container App Environment가 위치한 리소스 그룹 이름"
+  description = "명시적으로 지정할 Container App Environment 리소스 그룹 이름 (비워두면 자동 생성 규칙 적용)"
+  default     = ""
 }
 
 # [추가됨] Container App 이름을 위한 변수

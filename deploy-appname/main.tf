@@ -3,9 +3,11 @@ module "aca_app" {
 
   # 환경 설정
   env                = "dev"
+  region             = "krc"
+  project            = "stl"
   create_environment = false
-  cae_name           = "cae-krc-dev-common"
-  cae_rg_name        = "rg-krc-dev-stl"
+  # cae_name           = "cae-krc-dev-common"
+  # cae_rg_name        = "rg-krc-dev-stl" 
   
   # 앱 설정
   app_name           = "test-app-dev"

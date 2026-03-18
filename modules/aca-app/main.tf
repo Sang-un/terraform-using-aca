@@ -1,5 +1,17 @@
+locals {
+  # Naming Convention: {resource_type}-{region}-{env}-{project}
+  app_rg_name = "rg-${var.region}-${var.env}-${var.project}"
+  
+  # CAE 이름 및 RG: 값이 빈 문자열이면 기본 컨벤션 지정
+  cae_name    = var.cae_name != "" ? var.cae_name : "acaenv-${var.region}-${var.env}-${var.project}"
+  cae_rg_name = var.cae_rg_name != "" ? var.cae_rg_name : "rg-${var.region}-${var.env}-${var.project}"
+
+  law_name    = "law-${var.region}-${var.env}-common"
+  law_rg_name = "rg-${var.region}-${var.env}-common"
+}
+
 data "azurerm_resource_group" "app_rg" {
-  name = "rg-krc-${var.env}-stl"
+  name = local.app_rg_name
 }
 
 # ------------------------------------------------------------------
@@ -7,8 +19,8 @@ data "azurerm_resource_group" "app_rg" {
 # ------------------------------------------------------------------
 data "azurerm_container_app_environment" "existing_cae" {
   count               = var.create_environment ? 0 : 1
-  name                = var.cae_name
-  resource_group_name = var.cae_rg_name
+  name                = local.cae_name
+  resource_group_name = local.cae_rg_name
 }
 
 # ------------------------------------------------------------------
@@ -16,15 +28,15 @@ data "azurerm_container_app_environment" "existing_cae" {
 # ------------------------------------------------------------------
 data "azurerm_log_analytics_workspace" "law" {
   count               = var.create_environment ? 1 : 0
-  name                = "law-krc-${var.env}-common" 
-  resource_group_name = "rg-krc-${var.env}-common"
+  name                = local.law_name 
+  resource_group_name = local.law_rg_name
 }
 
 resource "azurerm_container_app_environment" "new_cae" {
   count                      = var.create_environment ? 1 : 0
-  name                       = var.cae_name
+  name                       = local.cae_name
   location                   = data.azurerm_resource_group.app_rg.location
-  resource_group_name        = var.cae_rg_name
+  resource_group_name        = local.cae_rg_name
   log_analytics_workspace_id = data.azurerm_log_analytics_workspace.law[0].id
 
   # 서브넷 ID가 입력되었을 때만 커스텀 VNet 연동

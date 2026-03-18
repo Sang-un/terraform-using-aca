@@ -3,9 +3,9 @@ module "aca_app" {
 
   # 환경 설정
   env                = "dev"
+  region             = "krc"
+  project            = "pug"
   create_environment = true
-  cae_name           = "acaenv-krc-dev-pug"
-  cae_rg_name        = "rg-krc-dev-pug"
   
   # 네트워크 (선택)
   infrastructure_subnet_id       = "/subscriptions/a98144a1-06aa-4136-9f70-d68d15be60f3/resourceGroups/rg-krc-dev-common/providers/Microsoft.Network/virtualNetworks/vnet-krc-dev-common/subnets/snet-krc-dev-pug-aca"
