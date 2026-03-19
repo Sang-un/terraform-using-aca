@@ -10,7 +10,7 @@ module "aca_app" {
   # cae_rg_name        = "rg-krc-stg-data"
   
   # 네트워크 (선택)
-  infrastructure_subnet_id       = "/subscriptions/a98144a1-06aa-4136-9f70-d68d15be60f3/resourceGroups/rg-krc-stg-common/providers/Microsoft.Network/virtualNetworks/vnet-krc-stg-common/subnets/snet-krc-stg-data-aca"
+  infrastructure_subnet_id       = "/subscriptions/bc08b927-9eba-423d-a61f-bc444d048ec9/resourceGroups/rg-krc-stg-common/providers/Microsoft.Network/virtualNetworks/vnet-krc-stg-common/subnets/snet-krc-stg-data-aca"
   internal_load_balancer_enabled = true
   zone_redundancy_enabled        = true
 
@@ -25,5 +25,5 @@ module "aca_app" {
   # Secret & 민감 정보 (전달)
   uami_client_id     = var.uami_client_id
   subscription_id    = var.subscription_id
-  uami_resource_id   = "/subscriptions/a98144a1-06aa-4136-9f70-d68d15be60f3/resourceGroups/rg-krc-stg-common/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami-krc-stg-acrpull"
+  uami_resource_id   = "/subscriptions/bc08b927-9eba-423d-a61f-bc444d048ec9/resourceGroups/rg-krc-stg-common/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami-krc-stg-acrpull"
 }

@@ -20,5 +20,5 @@ module "aca_app" {
   # Secret & 민감 정보 (전달)
   uami_client_id     = var.uami_client_id
   subscription_id    = var.subscription_id
-  uami_resource_id   = "/subscriptions/a98144a1-06aa-4136-9f70-d68d15be60f3/resourceGroups/rg-krc-prd-common/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami-krc-prd-acrpull"
+  uami_resource_id   = "/subscriptions/d08e1c28-7a9a-4a3d-99ce-d74857edff01/resourceGroups/rg-krc-prd-common/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami-krc-prd-acrpull"
 }
