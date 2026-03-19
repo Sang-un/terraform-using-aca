@@ -4,8 +4,9 @@ module "aca_app" {
   # 환경 설정
   env                = "stg"
   region             = "krc"
-  project            = "stl-job"
+  project            = "stl"
   create_environment = true
+  cae_name           = "acaenv-krc-stg-stl-job"
   
   # 네트워크 (선택)
   infrastructure_subnet_id       = "/subscriptions/bc08b927-9eba-423d-a61f-bc444d048ec9/resourceGroups/rg-krc-stg-common/providers/Microsoft.Network/virtualNetworks/vnet-krc-stg-common/subnets/snet-krc-stg-stl-job-aca"
