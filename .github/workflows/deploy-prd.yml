@@ -13,8 +13,8 @@ permissions:
   contents: read  # 저장소 코드를 읽기 위한 권한
 
 jobs:
-  deploy-dev:
-    runs-on: self-hosted 
+  deploy-prd:
+    runs-on: [self-hosted, prd]
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
