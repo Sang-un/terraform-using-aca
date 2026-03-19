@@ -1,0 +1,47 @@
+name: "Destroy ACA in Dev"
+
+on:
+  workflow_dispatch:
+    inputs:
+      app_dir:
+        description: '삭제할 애플리케이션 디렉토리 이름 (예: env-pug, env-data)'
+        required: true
+        type: string
+
+permissions:
+  id-token: write # Azure 로그인을 위한 OIDC 토큰 발급 권한
+  contents: read  # 저장소 코드를 읽기 위한 권한
+
+jobs:
+  destroy-dev:
+    runs-on: [self-hosted, dev] 
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          auth-type: identity
+          client-id: ${{ secrets.UAMI_CLIENT_ID_DEV }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.SUB_ID_DEV }}
+          allow-no-subscriptions: true
+
+      - name: Terraform Init
+        working-directory: ${{ inputs.app_dir }}
+        run: |
+          terraform init \
+            -backend-config="resource_group_name=rg-krc-dev-common" \
+            -backend-config="storage_account_name=sakrcdevktcloudshell" \
+            -backend-config="container_name=terraform-state" \
+            -backend-config="key=dev/${{ inputs.app_dir }}/terraform.tfstate" \
+            -backend-config="subscription_id=${{ secrets.SUB_ID_DEV }}" \
+            -backend-config="use_azuread_auth=true"
+
+      - name: Terraform Destroy
+        working-directory: ${{ inputs.app_dir }}
+        run: |
+          terraform destroy -auto-approve \
+            -var="uami_client_id=${{ secrets.UAMI_CLIENT_ID_DEV }}" \
+            -var="subscription_id=${{ secrets.SUB_ID_DEV }}"
