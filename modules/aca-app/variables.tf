@@ -103,3 +103,8 @@ variable "allow_insecure_connections" {
   description = "true면 HTTP(80) 트래픽 허용, false면 HTTPS(443)로만 트래픽 허용"
   default     = true
 }
+variable "is_job" {
+  type        = bool
+  description = "true면 Container App Job을 생성하고, false면 Container App을 생성합니다."
+  default     = false
+}

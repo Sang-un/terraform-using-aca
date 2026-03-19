@@ -57,6 +57,8 @@ locals {
 # [배포] Container App
 # ------------------------------------------------------------------
 resource "azurerm_container_app" "app" {
+  count = var.is_job ? 0 : 1
+
   name                         = var.app_name
   container_app_environment_id = local.final_cae_id
   resource_group_name          = data.azurerm_resource_group.app_rg.name
@@ -94,6 +96,46 @@ resource "azurerm_container_app" "app" {
     traffic_weight {
       percentage      = 100
       latest_revision = true
+    }
+  }
+}
+# ------------------------------------------------------------------
+# [배포] Container App Job
+# ------------------------------------------------------------------
+resource "azurerm_container_app_job" "job" {
+  count                        = var.is_job ? 1 : 0
+  name                         = var.app_name
+  container_app_environment_id = local.final_cae_id
+  resource_group_name          = data.azurerm_resource_group.app_rg.name
+  location                     = data.azurerm_resource_group.app_rg.location
+
+  replica_timeout_in_seconds   = 1800
+  replica_retry_limit          = 1
+
+  manual_trigger_config {
+    parallelism              = 1
+    replica_completion_count = 1
+  }
+
+  identity {
+    type         = "UserAssigned"
+    identity_ids = [var.uami_resource_id]
+  }
+
+  dynamic "registry" {
+    for_each = var.acr_server != "" ? [1] : []
+    content {
+      server   = var.acr_server
+      identity = var.uami_resource_id
+    }
+  }
+
+  template {
+    container {
+      name   = var.app_name
+      image  = var.image
+      cpu    = var.cpu
+      memory = var.memory
     }
   }
 }

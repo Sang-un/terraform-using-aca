@@ -6,6 +6,7 @@ module "aca_app" {
   region             = "krc"
   project            = "pug"
   create_environment = true
+  is_job             = true
   cae_name           = "acaenv-krc-stg-pug-job"
   
   # 네트워크 (선택)

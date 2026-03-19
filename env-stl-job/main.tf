@@ -6,6 +6,7 @@ module "aca_app" {
   region             = "krc"
   project            = "stl"
   create_environment = true
+  is_job             = true
   cae_name           = "acaenv-krc-dev-stl-job"
   
   # 네트워크 (선택)
