@@ -32,11 +32,11 @@ jobs:
         working-directory: ${{ inputs.app_dir }}
         run: |
           terraform init \
-            -backend-config="resource_group_name=rg-krc-stg-common" \
+            -backend-config="resource_group_name=rg-krc-dev-common" \
             -backend-config="storage_account_name=sakrcdevktcloudshell" \
             -backend-config="container_name=terraform-state" \
             -backend-config="key=stg/${{ inputs.app_dir }}/terraform.tfstate" \
-            -backend-config="subscription_id=${{ secrets.SUB_ID_STG }}"
+            -backend-config="subscription_id=${{ secrets.SUB_ID_DEV }}"
 
       - name: Terraform Apply
         working-directory: ${{ inputs.app_dir }}
